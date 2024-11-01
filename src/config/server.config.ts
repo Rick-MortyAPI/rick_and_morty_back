@@ -26,7 +26,7 @@ export class Server {
         this.app.use(cors());
         this.app.use(express.static('public'));
         this.app.use(express.json());
-        //this.app.use(errorHandler);
+        this.app.use(errorHandler);
     };
 
     private initializeRoutes = (): void => {

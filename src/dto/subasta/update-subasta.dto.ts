@@ -1,10 +1,12 @@
 import Joi from 'joi';
+import { EstadoSubasta } from './subasta.dto';
 
 export class UpdateSubastaDto {
     id: number;
     horaInicial: Date;
     horaFinal: Date;
     idCapturado: number;
+    estado: EstadoSubasta;
 }
 
 export const updateSubastaSchema = Joi.object({
@@ -38,5 +40,11 @@ export const updateSubastaSchema = Joi.object({
             'number.base': 'ID de capturado debe ser un número.',
             'number.integer': 'ID de capturado debe ser un número entero.',
             'number.positive': 'ID de capturado debe ser un número positivo.',
+        }),
+    estado: Joi.string()
+        .valid(...Object.values(EstadoSubasta))
+        .optional()
+        .messages({
+            'any.only': 'Estado debe ser "Disponible" o "Completado".'
         }),
 }).options({ abortEarly: false });

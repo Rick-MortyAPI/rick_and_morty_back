@@ -36,19 +36,27 @@ export class UsuariosService {
 
     public updateUsuario = async (usuario: UpdateUsuariosDto): Promise<Usuarios> => {
         const responseById = await this.usuariosRepository.findUsuarioById(usuario.id);
+        
         const data = updateUsuariosSchema.validate(usuario);
-
         if (data.error) throw mapJoiErrors(data.error.details);
+        
         if (!responseById) throw new Error(USER_NOT_FOUND);
-
-        return await this.usuariosRepository.updateUsuario( usuario );
+        
+        const updatedUser = await this.usuariosRepository.updateUsuario(usuario);
+        return updatedUser;
     };
 
     public deleteUsuario = async (id: number): Promise<void> => {
+        console.log(`Buscando usuario con id: ${id}`);
         const responseById = await this.usuariosRepository.findUsuarioById(id);
         
-        if (!responseById) throw new Error(USER_NOT_FOUND);
-
+        if (!responseById) {
+            throw new Error(USER_NOT_FOUND);
+        }
+    
+        console.log(`Usuario encontrado:`, responseById);
         await this.usuariosRepository.deleteUsuario(id);
+        console.log(`Usuario con id: ${id} eliminado.`);
     };
+    
 }

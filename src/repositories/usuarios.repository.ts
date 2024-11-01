@@ -23,11 +23,19 @@ export class UsuariosRepository {
 
     public updateUsuario = async (usuario: UpdateUsuariosDto) => {
         const { id, ...updateData } = usuario;
+        const usuarioExistente = await this.findUsuarioById(id);
+        
+        if (!usuarioExistente) {
+            throw new Error('Usuario no encontrado');
+        }
         await this.repository.update({ id }, updateData);
         return this.findUsuarioById(id);
-    };
+    };    
 
     public deleteUsuario = async (id: number) => {
-        return this.repository.delete(id);
+        const result = await this.repository.delete(id);
+        console.log(`Resultado de la eliminación:`, result);
+        return result;
     };
+    
 }
