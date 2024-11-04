@@ -33,7 +33,7 @@ export class Server {
         this.app.use(`${this.path}/usuarios`, usuariosRouter);
         this.app.use(`${this.path}/favoritos`, favoritosRouter);
         this.app.use(`${this.path}/capturados`, capturadosRouter);
-        this.app.use(`${this.path}/subasta`, subastasRouter);
+        this.app.use(`${this.path}/subastas`, subastasRouter);
     };
 
     private initializeDataSource = async (): Promise<void> => {

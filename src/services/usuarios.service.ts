@@ -1,6 +1,6 @@
 import { UsuariosRepository } from '../repositories/usuarios.repository';
 import { Usuarios } from '../entities/usuarios.entity';
-import { CreateUsuariosDto, createUsuariosSchema, UpdateUsuariosDto, updateUsuariosSchema } from '../dto/usuarios';
+import { CreateUsuariosDto, createUsuariosSchema, UpdateUsuariosDto, updateUsuariosSchema, UsuariosDto } from '../dto/usuarios';
 import { USER_NOT_FOUND, USER_ALREADY_EXISTS } from '../utilities/messages.utility';
 import { mapJoiErrors } from '../middlewares/validation-error.middleware';
 
@@ -25,8 +25,8 @@ export class UsuariosService {
 
     public saveUsuario = async (usuario: CreateUsuariosDto): Promise<Usuarios> => {
         const data = createUsuariosSchema.validate(usuario);
+        if (data.error) throw new Error(data.error.details.map(err => err.message).join(", "));
 
-        if (data.error) throw mapJoiErrors(data.error.details);
         const responseByEmail = await this.usuariosRepository.findUsuarioByEmail(usuario.email);
 
         if (responseByEmail) throw new Error(USER_ALREADY_EXISTS);
@@ -38,7 +38,7 @@ export class UsuariosService {
         const responseById = await this.usuariosRepository.findUsuarioById(usuario.id);
         
         const data = updateUsuariosSchema.validate(usuario);
-        if (data.error) throw mapJoiErrors(data.error.details);
+        if (data.error) if (data.error) throw new Error(data.error.details.map(err => err.message).join(", "));
         
         if (!responseById) throw new Error(USER_NOT_FOUND);
         
@@ -46,17 +46,22 @@ export class UsuariosService {
         return updatedUser;
     };
 
+    public async getUsuariosRankedByIntercambios(): Promise<UsuariosDto[]> {
+        return await this.usuariosRepository.getUsuariosRankedByIntercambios();
+    }    
+
+    public async getUsuariosRankedByCapturados(): Promise<UsuariosDto[]> {
+        return await this.usuariosRepository.getUsuariosRankedByCapturados();
+    }
+
     public deleteUsuario = async (id: number): Promise<void> => {
-        console.log(`Buscando usuario con id: ${id}`);
         const responseById = await this.usuariosRepository.findUsuarioById(id);
         
         if (!responseById) {
             throw new Error(USER_NOT_FOUND);
         }
     
-        console.log(`Usuario encontrado:`, responseById);
         await this.usuariosRepository.deleteUsuario(id);
-        console.log(`Usuario con id: ${id} eliminado.`);
     };
     
 }

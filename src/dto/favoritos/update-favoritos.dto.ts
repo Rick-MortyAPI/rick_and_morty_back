@@ -1,9 +1,10 @@
 import Joi from 'joi';
+import { Usuarios } from '../../entities';
 
 export class UpdateFavoritosDto {
     id: number;
-    idUsuario: number;
     idPersonaje: number;
+    idUsuario: number;
 }
 
 export const updateFavoritosSchema = Joi.object({

@@ -8,4 +8,6 @@ usuariosRouter.get('/getAll', usuariosController.getAllUsuarios.bind(usuariosCon
 usuariosRouter.get('/findById/:id', usuariosController.findUsuarioById.bind(usuariosController));
 usuariosRouter.post('/create', usuariosController.saveUsuario.bind(usuariosController));
 usuariosRouter.put('/update', usuariosController.updateUsuario);
+usuariosRouter.get('/ranking/intercambios', usuariosController.getUsuariosRankedByIntercambios);
+usuariosRouter.get('/ranking/capturados', usuariosController.getUsuariosRankedByCapturados);
 usuariosRouter.delete('/delete/:id', usuariosController.deleteUsuario.bind(usuariosController));

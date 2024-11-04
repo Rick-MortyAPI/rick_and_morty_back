@@ -57,10 +57,26 @@ export class UsuariosController {
             return res.status(NOT_FOUND_STATUS).json({ error: error.message });
         }
     };
-    
+
+    public getUsuariosRankedByIntercambios = async (req: Request, res: Response) => {
+        try {
+            const usuario = await this.usuariosService.getUsuariosRankedByIntercambios();
+            return res.status(OK_STATUS).json(usuario);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    };
+
+    public getUsuariosRankedByCapturados = async (req: Request, res: Response) => {
+        try {
+            const ranking = await this.usuariosService.getUsuariosRankedByCapturados();
+            return res.status(OK_STATUS).json(ranking);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    };
 
     public deleteUsuario = async (req: Request, res: Response) => {
-        console.log("ENTRO AQUI");
         const { id } = req.params;
     
         if (isNaN(Number(id))) {
