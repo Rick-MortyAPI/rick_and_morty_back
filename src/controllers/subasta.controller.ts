@@ -65,7 +65,6 @@ export class SubastasController {
     public confirmSubasta = async (req: Request, res: Response) => {
         const { subastaId, userId, idPersonajeIntercambio } = req.body;
         try {
-            console.log("Controller")
             const result = await this.subastasService.confirmSubasta(subastaId, userId, idPersonajeIntercambio);
             return res.status(OK_STATUS).json(result);
         } catch (error) {
