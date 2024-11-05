@@ -58,7 +58,6 @@ export class SubastaService {
     };
 
     public async confirmSubasta(subastaId: number, userId: number, idPersonajeIntercambio: number): Promise<SubastaDto> {
-        console.log("Entra al servicio")
         const subasta = await this.subastaRepository.findSubastaById(subastaId);
         if (!subasta || subasta.estado !== "Disponible") throw new Error(SUBASTA_NOT_ALLOWED);
 
@@ -69,23 +68,17 @@ export class SubastaService {
         const personajeIntercambio = await this.CapturadosService.findCapturadoById(idPersonajeIntercambio);
         if (!personajeIntercambio || personajeIntercambio.idUsuario !== userId) throw new Error(SUBASTA_USUARIO_NOT_ALLOWED);
 
-        console.log("Compienza intercambio")
-
         // Intercambiar el idUsuario del capturado
         const capturadoOriginal = subasta.capturado;
         capturadoOriginal.idUsuario = usuarioIntercambiador.id;
         personajeIntercambio.idUsuario = usuarioCreador.id;
 
-        console.log("object")
-
-        // Guardar los cambios en los capturados
+        delete capturadoOriginal.usuario;
         await this.CapturadosService.updateCapturado(capturadoOriginal);
-        console.log("1")
+
+        delete personajeIntercambio.usuario;
         await this.CapturadosService.updateCapturado(personajeIntercambio);
 
-        console.log("2")
-
-        // Actualizar los números de intercambio de ambos usuarios
         usuarioCreador.numIntercambios += 1;
         usuarioIntercambiador.numIntercambios += 1;
         await this.usuariosService.updateUsuario(usuarioCreador);

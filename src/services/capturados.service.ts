@@ -53,6 +53,7 @@ export class CapturadosService {
     };
 
     public updateCapturado = async (capturado: UpdateCapturadosDto): Promise<Capturados> => {
+        // Eliminar el campo `usuario` si está presente
         const responseById = await this.capturadosRepository.findCapturadoById(capturado.id);
         const data = updateCapturadosSchema.validate(capturado);
 
