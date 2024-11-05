@@ -26,14 +26,14 @@ export class Server {
         this.app.use(cors());
         this.app.use(express.static('public'));
         this.app.use(express.json());
-        //this.app.use(errorHandler);
+        this.app.use(errorHandler);
     };
 
     private initializeRoutes = (): void => {
         this.app.use(`${this.path}/usuarios`, usuariosRouter);
         this.app.use(`${this.path}/favoritos`, favoritosRouter);
         this.app.use(`${this.path}/capturados`, capturadosRouter);
-        this.app.use(`${this.path}/subasta`, subastasRouter);
+        this.app.use(`${this.path}/subastas`, subastasRouter);
     };
 
     private initializeDataSource = async (): Promise<void> => {

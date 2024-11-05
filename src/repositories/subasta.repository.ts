@@ -26,4 +26,8 @@ export class SubastaRepository {
     public deleteSubasta = async (id: number) => {
         return this.repository.delete(id);
     };
+
+    public confirmSubasta = async (subastaId: number, userId: number, idPersonajeIntercambio: number) => {
+        return this.repository.findOneBy({ id: subastaId });
+    }
 }

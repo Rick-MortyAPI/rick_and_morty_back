@@ -12,10 +12,13 @@ export class Capturados extends BaseEntity {
     @Column('decimal', { nullable: false })
     longitud: number;
 
-    @Column({ name: 'id_personaje', nullable: false })
+    @Column({ name: 'idpersonaje', nullable: false })
     idPersonaje: number;
 
-    @ManyToOne(() => Usuarios, (usuario) => usuario.capturados, { nullable: false })
-    @JoinColumn({ name: 'id_usuario', referencedColumnName: 'id' })
+    @Column({ name: 'usuario_id', nullable: false })
+    idUsuario: number;
+
+    @ManyToOne(() => Usuarios, { nullable: false, eager: true })
+    @JoinColumn({ name: 'usuario_id'})
     usuario: Usuarios;
 }
