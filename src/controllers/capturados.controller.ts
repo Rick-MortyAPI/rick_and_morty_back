@@ -18,6 +18,17 @@ export class CapturadosController {
         }
     }
 
+    public getCapturadoById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        try {
+            const capturado = await this.capturadosService.findCapturadoById(+id);
+            return res.status(OK_STATUS).json(capturado);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    }
+
     public saveCapturado = async (req: Request, res: Response) => {
         const capturado = req.body;
 
@@ -27,6 +38,17 @@ export class CapturadosController {
         } catch (error) {
             if (!error.message) return res.status(BAD_REQUEST_STATUS).json(error);
             return res.status(CONFLICT_STATUS).json({ error: error.message });
+        }
+    }
+
+    public updateCapturado = async (req: Request, res: Response) => {
+        const capturado = req.body;
+
+        try {
+            const updatedCapturado = await this.capturadosService.updateCapturado(capturado);
+            return res.status(OK_STATUS).json(updatedCapturado);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
         }
     }
 

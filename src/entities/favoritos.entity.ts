@@ -6,13 +6,13 @@ export class Favoritos extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'id_usuario', nullable: false })
-  idUsuario: number;
-
-  @Column({ name: 'id_personaje', nullable: false })
+  @Column({ name: 'idpersonaje', nullable: false })
   idPersonaje: number;
 
-  @ManyToOne(() => Usuarios, (usuario) => usuario.favoritos, { nullable: false })
-  @JoinColumn({ name: 'id_usuario', referencedColumnName: 'id' })
+  @Column({ name: 'usuario_id', nullable: false })
+  idUsuario: number;
+
+  @ManyToOne(() => Usuarios, { nullable: false, eager: true })
+  @JoinColumn({ name: 'usuario_id'})
   usuario: Usuarios;
 }

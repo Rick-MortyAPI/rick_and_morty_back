@@ -18,6 +18,17 @@ export class SubastasController {
         }
     }
 
+    public getSubastaById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        try {
+            const subasta = await this.subastasService.findSubastaById(+id);
+            return res.status(OK_STATUS).json(subasta);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    }
+
     public saveSubasta = async (req: Request, res: Response) => {
         const subasta = req.body;
 
@@ -30,6 +41,16 @@ export class SubastasController {
         }
     }
 
+    public updateSubasta = async (req: Request, res: Response) => {
+        try {
+            const subastaActualizada = await this.subastasService.updateSubasta(req.body);
+            return res.status(OK_STATUS).json(subastaActualizada);
+        } catch (error) {
+            return res.status(BAD_REQUEST_STATUS).json({ error: error.message }); 
+        }
+    };
+    
+
     public deleteSubasta = async (req: Request, res: Response) => {
         const { id } = req.params;
 
@@ -40,4 +61,14 @@ export class SubastasController {
             return res.status(NOT_FOUND_STATUS).json({ error: error.message });
         }
     }
+
+    public confirmSubasta = async (req: Request, res: Response) => {
+        const { subastaId, userId, idPersonajeIntercambio } = req.body;
+        try {
+            const result = await this.subastasService.confirmSubasta(subastaId, userId, idPersonajeIntercambio);
+            return res.status(OK_STATUS).json(result);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    };
 }

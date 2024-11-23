@@ -18,6 +18,17 @@ export class FavoritosController {
         }
     }
 
+    public getFavoritoById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        try {
+            const favorito = await this.favoritosService.findFavoritoById(+id);
+            return res.status(OK_STATUS).json(favorito);
+        } catch (error) {
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
+        }
+    }
+
     public saveFavorito = async (req: Request, res: Response) => {
         const favorito = req.body;
 
@@ -27,6 +38,18 @@ export class FavoritosController {
         } catch (error) {
             if (!error.message) return res.status(BAD_REQUEST_STATUS).json(error);
             return res.status(CONFLICT_STATUS).json({ error: error.message });
+        }
+    }
+
+    public updateFavorito = async (req: Request, res: Response) => {
+        const favorito = req.body;
+
+        try {
+            await this.favoritosService.updateFavorito(favorito);
+            return res.status(OK_STATUS).json(favorito);
+        } catch (error) {
+            if (!error.message) return res.status(BAD_REQUEST_STATUS).json(error);
+            return res.status(NOT_FOUND_STATUS).json({ error: error.message });
         }
     }
 

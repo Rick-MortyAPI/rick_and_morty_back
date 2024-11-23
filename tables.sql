@@ -27,10 +27,14 @@ CREATE TABLE Capturados (
     longitud DECIMAL(9, 6) NOT NULL
 );
 
+-- Primero, definimos el tipo ENUM para el estado
+CREATE TYPE estado_subasta AS ENUM ('Disponible', 'Completado');
+
 -- Tabla Subasta
 CREATE TABLE Subasta (
     id SERIAL PRIMARY KEY,
     capturado_id INTEGER REFERENCES Capturados(id) ON DELETE CASCADE,
     horaInicial TIMESTAMP NOT NULL,
-    horaFinal TIMESTAMP NOT NULL
+    horaFinal TIMESTAMP NOT NULL,
+    estado estado_subasta DEFAULT 'Disponible'
 );
