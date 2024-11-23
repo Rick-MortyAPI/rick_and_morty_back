@@ -18,6 +18,9 @@ export const AppDataSource = new DataSource({
     database: DATABASE_NAME,
     synchronize: DEFAULT_SYNCHRONIZE,
     logging: false,
+    ssl: {
+        rejectUnauthorized: false, 
+    },
     entities: [
         Usuarios,
         Favoritos,
