@@ -23,23 +23,19 @@ export class Server {
     }
 
     private initializeMiddleware = (): void => {
-        // Configurar CORS
+        // Configurar CORS para permitir todos los orígenes
         this.app.use(cors({
-            origin: 'http://localhost:4200', // Cambia al origen necesario
+            origin: '*', // Permitir todos los orígenes
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization'],
-            credentials: true,
+            credentials: false, // Cambiar a true si necesitas cookies o autenticación basada en credenciales
         }));
 
-        // Manejar manualmente las solicitudes OPTIONS si es necesario
+        // Agregar encabezados a todas las respuestas
         this.app.use((req, res, next) => {
-            if (req.method === 'OPTIONS') {
-                res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-                res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-                res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-                res.header('Access-Control-Allow-Credentials', 'true');
-                return res.sendStatus(204);
-            }
+            res.header('Access-Control-Allow-Origin', '*'); // Permitir todos los orígenes
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             next();
         });
 
