@@ -33,10 +33,6 @@ export class CapturadosService {
         const usuario = await this.usuariosRepository.findUsuarioById(capturado.idUsuario);
         if (!usuario) throw new Error(CAPTURADOS_NOT_FOUND_USER(capturado.idUsuario));
         
-        const responseById = await this.capturadosRepository.findCapturadoByUserIdAndCharacterId(capturado.idUsuario, capturado.idPersonaje);
-        if (responseById) throw new Error(CAPTURADOS_ALREADY_EXISTS);
-
-        
         const usuarioData = {
             "id": usuario.id,
             "nombre": usuario.nombre,
