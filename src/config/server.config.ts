@@ -23,7 +23,11 @@ export class Server {
     }
 
     private initializeMiddleware = (): void => {
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: '*', // Permite solicitudes desde cualquier origen
+            methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+            allowedHeaders: ['Content-Type', 'Authorization'], // Headers permitidos
+        }));
         this.app.use(express.static('public'));
         this.app.use(express.json());
         this.app.use(errorHandler);
