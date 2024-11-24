@@ -25,25 +25,22 @@ export class Server {
     private initializeMiddleware = (): void => {
         // Configurar CORS
         this.app.use(cors({
-            origin: (origin, callback) => {
-                if (!origin || origin === 'https://rick-and-morty-back-7o08.onrender.com') {
-                    callback(null, true);
-                } else {
-                    callback(new Error('Not allowed by CORS'));
-                }
-            },
+            origin: 'http://localhost:8100', // Cambia al origen necesario
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization'],
             credentials: true,
         }));
 
-        // Manejar solicitudes preflight (OPTIONS)
-        this.app.options('*', (req, res) => {
-            res.header('Access-Control-Allow-Origin', 'http://localhost:8100');
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            res.header('Access-Control-Allow-Credentials', 'true');
-            res.sendStatus(204);
+        // Manejar manualmente las solicitudes OPTIONS si es necesario
+        this.app.use((req, res, next) => {
+            if (req.method === 'OPTIONS') {
+                res.header('Access-Control-Allow-Origin', 'http://localhost:8100');
+                res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                res.header('Access-Control-Allow-Credentials', 'true');
+                return res.sendStatus(204);
+            }
+            next();
         });
 
         this.app.use(express.static('public'));
