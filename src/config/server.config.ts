@@ -23,7 +23,12 @@ export class Server {
     }
 
     private initializeMiddleware = (): void => {
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+        }));
+        this.app.options('*', cors()); // Manejar solicitudes preflight (OPTIONS)
         this.app.use(express.static('public'));
         this.app.use(express.json());
         this.app.use(errorHandler);
