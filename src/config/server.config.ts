@@ -23,12 +23,29 @@ export class Server {
     }
 
     private initializeMiddleware = (): void => {
+        // Configurar CORS
         this.app.use(cors({
-            origin: '*',
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            origin: (origin, callback) => {
+                if (!origin || origin === 'https://rick-and-morty-back-7o08.onrender.com') {
+                    callback(null, true);
+                } else {
+                    callback(new Error('Not allowed by CORS'));
+                }
+            },
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true,
         }));
-        this.app.options('*', cors()); // Manejar solicitudes preflight (OPTIONS)
+
+        // Manejar solicitudes preflight (OPTIONS)
+        this.app.options('*', (req, res) => {
+            res.header('Access-Control-Allow-Origin', 'http://localhost:8100');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            res.header('Access-Control-Allow-Credentials', 'true');
+            res.sendStatus(204);
+        });
+
         this.app.use(express.static('public'));
         this.app.use(express.json());
         this.app.use(errorHandler);
