@@ -26,7 +26,7 @@ export class Server {
         // Configurar CORS
         this.app.use(cors({
             origin: (origin, callback) => {
-                if (!origin || origin === 'http://localhost:8100') {
+                if (!origin || origin === 'https://rick-and-morty-back-7o08.onrender.com') {
                     callback(null, true);
                 } else {
                     callback(new Error('Not allowed by CORS'));
